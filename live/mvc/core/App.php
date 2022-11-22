@@ -25,9 +25,7 @@ class App {
         
         // xử lí params
         $this->params = $arr?array_values($arr):[];
-        echo $this->controller . "<br/>";
-        echo $this->action . "<br/>";
-        print_r($this->params);
+        call_user_func_array ([$this->controller, $this->action], $this-> params );
 
     }
 
