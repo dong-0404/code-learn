@@ -1,18 +1,20 @@
 <?php
 class App {
     protected $controller = "Home";
-    protected $action = "SayHi";
+    protected $action = "Show";
     protected $params = [] ;
 
     function __construct() {
+        
         $arr = $this -> UrlProcess ();
         //print_r($arr);
         
         // xử lí controller
-        if ( file_exists("./mvc/controllers/".$arr[0].".php") ){
+        if ($arr && file_exists("./mvc/controllers/".$arr[0].".php") ){
             $this->controller = $arr[0];
             unset($arr[0]);
         }
+
         require_once "./mvc/controllers/".$this->controller.".php";
 
         // xử lí action
@@ -24,10 +26,8 @@ class App {
         }
         
         // xử lí params
-        $this->params = $arr?array_values($arr):[];
-        echo $this->controller . "<br/>";
-        echo $this->action . "<br/>";
-        print_r($this->params);
+        $params = (array) $arr ? array_values($arr) : [];
+        call_user_func_array([new $this->controller, $this->action], $params);
 
     }
 
